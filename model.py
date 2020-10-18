@@ -19,9 +19,56 @@ def newGameBoard() :
     blackCell = blocks - 1
 # 将图片的一块挖空
     board[blackCell] = -1
-
+    # 将空白块进行随机移动，确保每次打乱都能够有解
+    for i in range(50) :
+        direction = random.randint(0, 3)
+        if (direction == 0) :
+            blackCell = moveLeft(board, blackCell)
+        elif (direction == 1) :
+            blackCell = moveRight(board, blackCell)
+        elif (direction == 2) :
+            blackCell = moveUp(board, blackCell)
+        elif (direction == 3) :
+            blackCell = moveDown(board, blackCell)
     return board, blackCell
+# 若空白图像块不在最左边，则将空白块左边的块移动到空白块位置
+def moveRight(board, blackCell) :
+    if blackCell % rows == 0 :
+        return blackCell
+    board[blackCell - 1], board[blackCell] = board[blackCell], board[blackCell - 1]
+    return blackCell - 1
 
+
+# 若空白图像块不在最右边，则将空白块右边的块移动到空白块位置
+def moveLeft(board, blackCell) :
+    if blackCell % rows == rows - 1 :
+        return blackCell
+    board[blackCell + 1], board[blackCell] = board[blackCell], board[blackCell + 1]
+    return blackCell + 1
+
+
+# 若空白图像块不在最上边，则将空白块上边的块移动到空白块位置
+def moveDown(board, blackCell) :
+    if blackCell < rows :
+        return blackCell
+    board[blackCell - rows], board[blackCell] = board[blackCell], board[blackCell - rows]
+    return blackCell - rows
+
+
+# 若空白图像块不在最下边，则将空白块下边的块移动到空白块位置
+def moveUp(board, blackCell) :
+    if blackCell >= blocks - rows :
+        return blackCell
+    board[blackCell + rows], board[blackCell] = board[blackCell], board[blackCell + rows]
+    return blackCell + rows
+
+
+# 是否完成
+def isFinished(board, blackCell) :
+    for i in range(blocks - 1) :
+        if board[i] != i :
+            return False
+    return True
 
 
 # 初始化
@@ -47,7 +94,28 @@ while True :
         if event.type == QUIT :
             pygame.quit()
             sys.exit()
+        if finish :
+            continue
+        if event.type == KEYDOWN :
+            if event.key == K_d :
+                blackCell = moveLeft(gameBoard, blackCell)
+
+            if event.key == K_a :
+                blackCell = moveRight(gameBoard, blackCell)
+
+            if event.key == K_s :
+                blackCell = moveUp(gameBoard, blackCell)
+
+            if event.key == K_w :
+                blackCell = moveDown(gameBoard, blackCell)
+
+
+    if (isFinished(gameBoard, blackCell)) :
+        gameBoard[blackCell] = blocks - 1
+        finish = True
+
     screen.fill(background)
+
 #绘制拼图
     for i in range(blocks) :
         rowDst = int(i / rows)
