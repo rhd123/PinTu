@@ -70,11 +70,11 @@ def isFinished(board, blackCell):
 
 
 # 从Postman获取题目，将图片保存至文件夹
-pic_url = requests.get('http://47.102.118.1:8089/api/problem?stuid=031802423')
-image_code = base64.b64decode(pic_url.json()['img'])
-file_like = BytesIO(image_code)
-image = Image.open(file_like)
-image.save('image.JPG')
+# pic_url = requests.get('http://47.102.118.1:8089/api/problem?stuid=031802423')
+# image_code = base64.b64decode(pic_url.json()['img'])
+# file_like = BytesIO(image_code)
+# image = Image.open(file_like)
+# image.save('image.JPG')
 # 初始化
 pygame.init()
 # 设置窗口
@@ -210,9 +210,11 @@ while True:
     windowSurface.fill(background)
     replay = pygame.image.load('./botton/restart.png')
     out = pygame.image.load('./botton/quit.png')
+    ai = pygame.image.load('./botton/AI.png')  # ai按钮
     windowSurface.blit(replay, [650, 10])
     windowSurface.blit(out,[650,70])
     windowSurface.blit(pic,[620,420])
+    windowSurface.blit(ai, [650, 130])  # ai按钮位置
     step = str(steps)
     showText(fontminObj, "Steps:", 700, 200)
     showText(fontminObj, step, 760, 220)
